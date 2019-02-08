@@ -12,8 +12,14 @@ d3.json("./data/revenues.json").then((data) => {
   });
 
   let y = d3.scaleLinear() 
-    .domain([0, 54273])
+    .domain([0, d3.max(data, (d) => { return d.revenue})])
     .range([0, height]);
+
+  let x = d3.scaleBand()
+    .domain(data.map((d) => {return d.month}))
+    .range([0, width])
+    .paddingInner(0.2)
+    .paddingOuter(0.7);
 
   var g = d3.select("#chart-area").append("svg")
       .attr("width", width + margin.right + margin.left)
@@ -28,10 +34,10 @@ d3.json("./data/revenues.json").then((data) => {
 
   rects.enter()
     .append("rect")
-    .attr("x", (d, i) => {
-      return (i * 50) + 25;
+    .attr("x", (d) => {
+      return x(d.month)
     })
-    .attr("width", 30)
+    .attr("width", x.bandwidth)
     .attr("height", (d) => {
       return y(d.revenue);
     })
