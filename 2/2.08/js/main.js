@@ -1,5 +1,6 @@
 
 d3.json("./data/buildings.json").then((data) => {
+  console.log(data);
   data.forEach((d) => {
     d.height = +d.height;
   });
@@ -15,6 +16,7 @@ d3.json("./data/buildings.json").then((data) => {
   rects.enter()
     .append("rect")
       .attr("x", (d, i) => {
+        console.log(d);
         return (i * 50) + 25;
       })
       .attr("width", 30)
